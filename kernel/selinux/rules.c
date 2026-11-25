@@ -196,6 +196,10 @@ void apply_kernelsu_rules()
 	apply_kernelsu_rules_fn((void *)db);
 
 	pol->latest_granting = old_pol->latest_granting + 1;
+	// 2ca3db92 (tiann #3969): remember which type values are original so
+	// later lookups can skip the symtab search.
+	if (!ksu_set_original_types(db, &old_pol->policydb, pol->latest_granting))
+		pr_warn("failed to save original type metadata, use backup lookups\n");
 	rcu_assign_pointer(selinux_state.policy, pol);
 	synchronize_rcu();
 	ksu_destroy_sepolicy(old_pol);
@@ -592,6 +596,9 @@ int handle_sepolicy(void __user *user_data, u64 data_len)
 	}
 
 	pol->latest_granting = old_pol->latest_granting + 1;
+	// 2ca3db92 (tiann #3969): carry the original-type metadata to the new policy.
+	if (!ksu_advance_original_types(db, &old_pol->policydb, old_pol->latest_granting, pol->latest_granting))
+		pr_warn("failed to carry original type metadata, use backup lookups\n");
 	rcu_assign_pointer(selinux_state.policy, pol);
 	synchronize_rcu();
 	ksu_destroy_sepolicy(old_pol);
