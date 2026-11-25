@@ -11,6 +11,10 @@ CFLAGS += -fno-unwind-tables -fmerge-all-constants
 CFLAGS +=  -fno-builtin-memcpy
 CFLAGS += -Wl,--entry=__start
 CFLAGS += -s -Wl,--gc-sections,-z,norelro
+# 33cca775 (tiann #3933): pin max page size + contiguous segments so the
+# runner's PT_LOAD stays page-aligned on 4K/16K kernels (elf_map() rejects
+# unaligned p_offset, PID 1 would panic "Attempted to kill init").
+CFLAGS += -Wl,-z,max-page-size=0x10000,-z,noseparate-code
 CFLAGS += -Wno-int-conversion -Wno-unknown-attributes -Wno-macro-redefined
 
 CFLAGS += -DZIG_VERSION=\"$(ZIG_VER)\"
