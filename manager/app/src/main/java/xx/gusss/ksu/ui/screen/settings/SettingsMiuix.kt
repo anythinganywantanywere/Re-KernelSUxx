@@ -27,6 +27,7 @@ import androidx.compose.material.icons.rounded.FlashOn
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.LayersClear
 import androidx.compose.material.icons.rounded.Palette
+import androidx.compose.material.icons.rounded.PhonelinkLock
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.SystemUpdate
@@ -323,6 +324,22 @@ fun SettingPagerMiuix(
                                 enabled = uiState.adbRootStatus == "supported",
                                 checked = uiState.isAdbRootEnabled,
                                 onCheckedChange = actions.onSetAdbRootEnabled
+                            )
+
+                            SwitchPreference(
+                                title = stringResource(id = R.string.settings_boot_hide),
+                                summary = stringResource(id = R.string.settings_boot_hide_summary),
+                                startAction = {
+                                    Icon(
+                                        Icons.Rounded.PhonelinkLock,
+                                        modifier = Modifier.padding(end = 6.dp),
+                                        contentDescription = stringResource(id = R.string.settings_boot_hide),
+                                        tint = colorScheme.onBackground
+                                    )
+                                },
+                                enabled = true,
+                                checked = uiState.isBootHideEnabled,
+                                onCheckedChange = actions.onSetBootHideEnabled
                             )
 
                             val shellSuAdbOnlySummary = when (uiState.shellSuAdbOnlyStatus) {

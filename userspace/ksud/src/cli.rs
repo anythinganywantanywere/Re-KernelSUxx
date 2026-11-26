@@ -159,6 +159,11 @@ enum Commands {
         #[command(subcommand)]
         command: crate::susfs::Command,
     },
+    #[command(name = "boot-hide", about = "Hide the bootloader unlock state")]
+    BootHide {
+        #[command(subcommand)]
+        command: crate::boot_hide::Command,
+    },
 }
 
 #[derive(clap::Subcommand, Debug)]
@@ -836,6 +841,7 @@ pub fn run() -> Result<()> {
             }
         },
         Commands::Susfs { command } => crate::susfs::run(command),
+        Commands::BootHide { command } => crate::boot_hide::run(&command),
         Commands::Initrc { command } => match command {
             Initrc::Refresh => regenerate_preinit(),
         },

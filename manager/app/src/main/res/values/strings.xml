@@ -324,6 +324,9 @@
     <string name="download_install">Install</string>
     <string name="settings_adb_root" translatable="false">ADB Root</string>
     <string name="settings_adb_root_summary">Run adbd daemon with Root privileges</string>
+    <string name="settings_boot_hide">Bootloader Hide</string>
+    <string name="settings_boot_hide_summary">Partially hide the Bootloader unlock state</string>
+    <string name="settings_boot_hide_reboot_hint">The real value returns after reboot</string>
     <string name="settings_shell_su_adb_only">Restrict shell root to ADB</string>
     <string name="settings_shell_su_adb_only_summary">Extra check when Shell is granted root: only processes spawned by adbd or a KernelSU root process (e.g. an ADB module) can use it, preventing apps that obtain shell privileges from escalating to root</string>
     <string name="menu_sort">Sort</string>

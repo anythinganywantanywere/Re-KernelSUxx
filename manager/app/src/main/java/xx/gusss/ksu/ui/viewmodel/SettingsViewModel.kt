@@ -80,6 +80,7 @@ class SettingsViewModel(
             } else {
                 repo.getAdbRootPersistValue() == 1L
             }
+            val isBootHideEnabled = repo.getBootHideStatus() == "enabled"
             val shellSuAdbOnlyStatus = repo.getShellSuAdbOnlyStatus()
             val isShellSuAdbOnlyEnabled = if (shellSuAdbOnlyStatus == "forced") {
                 repo.getShellSuAdbOnlyValue() == 1L
@@ -117,6 +118,7 @@ class SettingsViewModel(
                     isSuEnabled = isSuEnabled,
                     adbRootStatus = adbRootStatus,
                     isAdbRootEnabled = isAdbRootEnabled,
+                    isBootHideEnabled = isBootHideEnabled,
                     shellSuAdbOnlyStatus = shellSuAdbOnlyStatus,
                     isShellSuAdbOnlyEnabled = isShellSuAdbOnlyEnabled,
                     kernelUmountStatus = kernelUmountStatus,
@@ -362,6 +364,20 @@ class SettingsViewModel(
             if (repo.setAdbRootEnabled(enabled)) {
                 repo.execKsudFeatureSave()
                 _uiState.update { it.copy(isAdbRootEnabled = enabled) }
+            }
+        }
+    }
+
+    fun setBootHideEnabled(enabled: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (repo.setBootHideEnabled(enabled)) {
+                _uiState.update { it.copy(isBootHideEnabled = enabled) }
+                if (!enabled) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(ksuApp, R.string.settings_boot_hide_reboot_hint,
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }

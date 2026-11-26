@@ -109,6 +109,7 @@ pub fn on_post_fs_data() -> Result<()> {
 
     // re-apply the saved SUSFS config (no-op when none is saved)
     crate::susfs::boot_apply();
+    crate::boot_hide::boot_apply();
 
     // load system.prop
     if let Err(e) = crate::module::load_system_prop() {

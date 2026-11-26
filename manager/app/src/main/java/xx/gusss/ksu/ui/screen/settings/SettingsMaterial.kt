@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LayersClear
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.PhonelinkLock
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.SystemUpdate
@@ -260,6 +261,16 @@ fun SettingPagerMaterial(
                                 enabled = uiState.adbRootStatus == "supported",
                                 checked = uiState.isAdbRootEnabled,
                                 onCheckedChange = actions.onSetAdbRootEnabled
+                            )
+                        },
+                        {
+                            SegmentedSwitchItem(
+                                icon = Icons.Filled.PhonelinkLock,
+                                title = stringResource(id = R.string.settings_boot_hide),
+                                summary = stringResource(id = R.string.settings_boot_hide_summary),
+                                enabled = true,
+                                checked = uiState.isBootHideEnabled,
+                                onCheckedChange = actions.onSetBootHideEnabled
                             )
                         },
                         {
