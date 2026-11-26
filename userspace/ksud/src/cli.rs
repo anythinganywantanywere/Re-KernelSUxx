@@ -164,6 +164,11 @@ enum Commands {
         #[command(subcommand)]
         command: crate::boot_hide::Command,
     },
+    /// Manage UTS View (spoof the uname values apps see)
+    UtsView {
+        #[command(subcommand)]
+        command: crate::uts_view::Command,
+    },
 }
 
 #[derive(clap::Subcommand, Debug)]
@@ -842,6 +847,7 @@ pub fn run() -> Result<()> {
         },
         Commands::Susfs { command } => crate::susfs::run(command),
         Commands::BootHide { command } => crate::boot_hide::run(&command),
+        Commands::UtsView { command } => crate::uts_view::run(&command),
         Commands::Initrc { command } => match command {
             Initrc::Refresh => regenerate_preinit(),
         },

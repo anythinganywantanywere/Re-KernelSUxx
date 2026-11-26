@@ -60,6 +60,9 @@ interface SettingsRepository {
     suspend fun getBootHideStatus(): String
     fun setBootHideEnabled(enabled: Boolean): Boolean
 
+    suspend fun getUtsViewStatus(): String
+    fun setUtsViewEnabled(enabled: Boolean): Boolean
+
     suspend fun getShellSuAdbOnlyStatus(): String
     suspend fun getShellSuAdbOnlyPersistValue(): Long?
     suspend fun getShellSuAdbOnlyValue(): Long?

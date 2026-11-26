@@ -1,4 +1,5 @@
 #include "../manager/apk_sign.h"
+#include "../feature/uts_view.h"
 #ifdef CONFIG_KSU_SUSFS
 #include <linux/namei.h>
 #include <linux/susfs.h>
@@ -408,6 +409,28 @@ static int do_set_feature(void __user *arg)
 	}
 
 	return 0;
+}
+
+static int do_get_uts_view_config(void __user *arg)
+{
+	struct ksu_uts_view_config config;
+	int ret;
+
+	ret = ksu_uts_view_get_config(&config);
+	if (ret)
+		return ret;
+	if (copy_to_user(arg, &config, sizeof(config)))
+		return -EFAULT;
+	return 0;
+}
+
+static int do_set_uts_view_config(void __user *arg)
+{
+	struct ksu_uts_view_config config;
+
+	if (copy_from_user(&config, arg, sizeof(config)))
+		return -EFAULT;
+	return ksu_uts_view_set_config(&config);
 }
 
 static int do_get_wrapper_fd(void __user *arg) {
@@ -842,6 +865,8 @@ static const struct ksu_ioctl_cmd_map ksu_ioctl_handlers[] = {
 	{ .cmd = KSU_IOCTL_GET_SULOG_FD, .name = "GET_SULOG_FD", .handler = do_get_sulog_fd, .perm_check = only_root },
 	{ .cmd = KSU_IOCTL_DISABLE_ESCAPE_TO_ROOT, .name = "DISABLE_ESCAPE_TO_ROOT", .handler = do_disable_escape_to_root, .perm_check = only_root, .allow_su_session = true },
 	{ .cmd = KSU_IOCTL_LOOKUP_SYMBOLS, .name = "LOOKUP_SYMBOLS", .handler = do_lookup_symbols, .perm_check = only_root },
+	{ .cmd = KSU_IOCTL_GET_UTS_VIEW_CONFIG, .name = "GET_UTS_VIEW_CONFIG", .handler = do_get_uts_view_config, .perm_check = manager_or_root },
+	{ .cmd = KSU_IOCTL_SET_UTS_VIEW_CONFIG, .name = "SET_UTS_VIEW_CONFIG", .handler = do_set_uts_view_config, .perm_check = manager_or_root },
 	{ .cmd = 0, .name = NULL, .handler = NULL, .perm_check = NULL } // Sentinel
 };
 

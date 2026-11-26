@@ -53,6 +53,9 @@ data class SettingsUiState(
     // Bootloader Hide
     val isBootHideEnabled: Boolean = false,
 
+    // UTS View
+    val isUtsViewEnabled: Boolean = false,
+
     // Shell SU ADB Only
     val shellSuAdbOnlyStatus: String = "",
     val isShellSuAdbOnlyEnabled: Boolean = false,
@@ -80,6 +83,7 @@ data class SettingsScreenActions(
     val onSetSulogEnabled: (Boolean) -> Unit,
     val onSetAdbRootEnabled: (Boolean) -> Unit,
     val onSetBootHideEnabled: (Boolean) -> Unit,
+    val onSetUtsViewEnabled: (Boolean) -> Unit,
     val onSetShellSuAdbOnlyEnabled: (Boolean) -> Unit,
     val onSetDefaultUmountModules: (Boolean) -> Unit,
     val onSetEnableWebDebugging: (Boolean) -> Unit,

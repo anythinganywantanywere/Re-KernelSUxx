@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material.icons.filled.SystemUpdateAlt
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFlexibleTopAppBar
@@ -271,6 +272,16 @@ fun SettingPagerMaterial(
                                 enabled = true,
                                 checked = uiState.isBootHideEnabled,
                                 onCheckedChange = actions.onSetBootHideEnabled
+                            )
+                        },
+                        {
+                            SegmentedSwitchItem(
+                                icon = Icons.Filled.Terminal,
+                                title = stringResource(id = R.string.settings_uts_view),
+                                summary = stringResource(id = R.string.settings_uts_view_summary),
+                                enabled = true,
+                                checked = uiState.isUtsViewEnabled,
+                                onCheckedChange = actions.onSetUtsViewEnabled
                             )
                         },
                         {

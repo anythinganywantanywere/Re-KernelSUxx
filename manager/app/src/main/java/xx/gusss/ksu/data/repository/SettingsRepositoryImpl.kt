@@ -15,6 +15,7 @@ import xx.gusss.ksu.ui.UiMode
 import xx.gusss.ksu.ui.screen.modulerepo.RepoSort
 import xx.gusss.ksu.ui.util.execKsud
 import xx.gusss.ksu.ui.util.getBootHideStatus as getKsudBootHideStatus
+import xx.gusss.ksu.ui.util.getUtsViewStatus as getKsudUtsViewStatus
 import xx.gusss.ksu.ui.util.getFeaturePersistValue
 import xx.gusss.ksu.ui.util.getFeatureValue
 import xx.gusss.ksu.ui.util.getFeatureStatus
@@ -230,6 +231,11 @@ class SettingsRepositoryImpl : SettingsRepository {
 
     override fun setBootHideEnabled(enabled: Boolean): Boolean =
         execKsud("boot-hide ${if (enabled) "enable" else "disable"}", true)
+
+    override suspend fun getUtsViewStatus(): String = getKsudUtsViewStatus()
+
+    override fun setUtsViewEnabled(enabled: Boolean): Boolean =
+        execKsud("uts ${if (enabled) "enable" else "disable"}", true)
 
     override suspend fun getShellSuAdbOnlyStatus(): String = getFeatureStatus("shell_su_adb_only")
 

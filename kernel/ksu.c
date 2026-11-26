@@ -63,6 +63,7 @@
 #include "feature/shell_su_adb_only.h"
 #include "feature/sucompat.h"
 #include "feature/sulog.h"
+#include "feature/uts_view.h"
 #include "preinit/preinit.h"
 #include "runtime/ksud_boot.h"
 #include "runtime/ksud.h"
@@ -142,6 +143,7 @@
 #include "feature/shell_su_adb_only.c"
 #include "feature/sucompat.c"
 #include "feature/sulog.c"
+#include "feature/uts_view.c"
 #include "runtime/boot_event.c"
 #include "runtime/ksud_integration.c"
 
@@ -273,6 +275,8 @@ static int __init kernelsu_init(void)
 #endif
 	ksu_selinux_hide_init();
 	ksu_shell_su_adb_only_init();
+	if (ksu_uts_view_init())
+		pr_info("uts_view: feature unavailable\n");
 
 	ksu_supercalls_init();
 

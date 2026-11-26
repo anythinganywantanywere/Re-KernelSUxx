@@ -131,6 +131,13 @@ suspend fun getBootHideStatus(): String = withContext(Dispatchers.IO) {
     out.firstOrNull()?.trim().orEmpty()
 }
 
+suspend fun getUtsViewStatus(): String = withContext(Dispatchers.IO) {
+    val shell = getRootShell()
+    val out = shell.newJob()
+        .add("${getKsuDaemonPath()} uts status").to(ArrayList<String>(), null).exec().out
+    out.firstOrNull()?.trim().orEmpty()
+}
+
 suspend fun getFeaturePersistValue(feature: String): Long? = readFeatureValue("--config $feature")
 
 // Current value in kernel

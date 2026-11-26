@@ -81,6 +81,7 @@ class SettingsViewModel(
                 repo.getAdbRootPersistValue() == 1L
             }
             val isBootHideEnabled = repo.getBootHideStatus() == "enabled"
+            val isUtsViewEnabled = repo.getUtsViewStatus() == "enabled"
             val shellSuAdbOnlyStatus = repo.getShellSuAdbOnlyStatus()
             val isShellSuAdbOnlyEnabled = if (shellSuAdbOnlyStatus == "forced") {
                 repo.getShellSuAdbOnlyValue() == 1L
@@ -119,6 +120,7 @@ class SettingsViewModel(
                     adbRootStatus = adbRootStatus,
                     isAdbRootEnabled = isAdbRootEnabled,
                     isBootHideEnabled = isBootHideEnabled,
+                    isUtsViewEnabled = isUtsViewEnabled,
                     shellSuAdbOnlyStatus = shellSuAdbOnlyStatus,
                     isShellSuAdbOnlyEnabled = isShellSuAdbOnlyEnabled,
                     kernelUmountStatus = kernelUmountStatus,
@@ -378,6 +380,14 @@ class SettingsViewModel(
                             Toast.LENGTH_LONG).show()
                     }
                 }
+            }
+        }
+    }
+
+    fun setUtsViewEnabled(enabled: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (repo.setUtsViewEnabled(enabled)) {
+                _uiState.update { it.copy(isUtsViewEnabled = enabled) }
             }
         }
     }

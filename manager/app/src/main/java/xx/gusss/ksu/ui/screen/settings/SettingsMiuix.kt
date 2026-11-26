@@ -32,6 +32,7 @@ import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.Security
 import androidx.compose.material.icons.rounded.SystemUpdate
 import androidx.compose.material.icons.rounded.SystemUpdateAlt
+import androidx.compose.material.icons.rounded.Terminal
 import androidx.compose.material.icons.rounded.VerifiedUser
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -340,6 +341,22 @@ fun SettingPagerMiuix(
                                 enabled = true,
                                 checked = uiState.isBootHideEnabled,
                                 onCheckedChange = actions.onSetBootHideEnabled
+                            )
+
+                            SwitchPreference(
+                                title = stringResource(id = R.string.settings_uts_view),
+                                summary = stringResource(id = R.string.settings_uts_view_summary),
+                                startAction = {
+                                    Icon(
+                                        Icons.Rounded.Terminal,
+                                        modifier = Modifier.padding(end = 6.dp),
+                                        contentDescription = stringResource(id = R.string.settings_uts_view),
+                                        tint = colorScheme.onBackground
+                                    )
+                                },
+                                enabled = true,
+                                checked = uiState.isUtsViewEnabled,
+                                onCheckedChange = actions.onSetUtsViewEnabled
                             )
 
                             val shellSuAdbOnlySummary = when (uiState.shellSuAdbOnlyStatus) {

@@ -56,6 +56,8 @@ static void ksu_handle_extra_susfs_work(void)
 }
 #endif // #ifdef CONFIG_KSU_SUSFS
 
+#include "../feature/uts_view.h"
+
 static __always_inline void ksu_handle_setresuid_cred(struct cred *new, const struct cred *old)
 {
 	if (!new || !old)
@@ -90,6 +92,10 @@ do_umount:
     // Handle kernel umount
     ksu_handle_umount(new, old);
 
+	// UTS View SELECTED mode applies the spoofed UTS namespace when a
+	// zygote-spawned app takes its app UID. No-op unless SELECTED is active.
+	ksu_uts_view_on_setresuid(old_uid, new_uid);
+
 #ifdef CONFIG_KSU_SUSFS_SUS_PATH
     //susfs_run_sus_path_loop(new_uid);
 #endif // #ifdef CONFIG_KSU_SUSFS_SUS_PATH
@@ -106,6 +112,7 @@ do_umount:
 install_ksu_fd:
 	pr_info("install fd for manager: %d\n", new_uid);
 	ksu_install_fd();
+	ksu_uts_view_on_setresuid(old_uid, new_uid);
 
 kill_seccomp:
 	disable_seccomp();

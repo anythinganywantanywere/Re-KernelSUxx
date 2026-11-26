@@ -198,5 +198,7 @@ struct ksu_lookup_symbols_cmd {
 #define KSU_IOCTL_GET_SULOG_FD			_IOW('K', 20, struct ksu_get_sulog_fd_cmd)
 #define KSU_IOCTL_DISABLE_ESCAPE_TO_ROOT	_IO('K', 21)
 #define KSU_IOCTL_LOOKUP_SYMBOLS		_IOW('K', 22, struct ksu_lookup_symbols_cmd)
+#define KSU_IOCTL_GET_UTS_VIEW_CONFIG		_IOWR('K', 23, struct ksu_uts_view_config)
+#define KSU_IOCTL_SET_UTS_VIEW_CONFIG		_IOW('K', 24, struct ksu_uts_view_config)
 
 #endif
