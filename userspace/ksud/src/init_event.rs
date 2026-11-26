@@ -107,6 +107,9 @@ pub fn on_post_fs_data() -> Result<()> {
         warn!("exec post-fs-data scripts failed: {e}");
     }
 
+    // re-apply the saved SUSFS config (no-op when none is saved)
+    crate::susfs::boot_apply();
+
     // load system.prop
     if let Err(e) = crate::module::load_system_prop() {
         warn!("load system.prop failed: {e}");

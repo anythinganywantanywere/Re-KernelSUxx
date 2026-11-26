@@ -153,6 +153,12 @@ enum Commands {
         #[command(subcommand)]
         command: Initrc,
     },
+
+    /// Manage SUSFS (configures the built-in kernel-side SUSFS, never installs it)
+    Susfs {
+        #[command(subcommand)]
+        command: crate::susfs::Command,
+    },
 }
 
 #[derive(clap::Subcommand, Debug)]
@@ -829,6 +835,7 @@ pub fn run() -> Result<()> {
                 Ok(())
             }
         },
+        Commands::Susfs { command } => crate::susfs::run(command),
         Commands::Initrc { command } => match command {
             Initrc::Refresh => regenerate_preinit(),
         },
