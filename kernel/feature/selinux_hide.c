@@ -146,7 +146,11 @@ static __nocfi ssize_t ksu_selinux_transaction_write(struct file *file, const ch
 		goto skip_destroy;
 
 	kbuf[len] = '\0';
-	if (ksu_should_destroy_context(kbuf, len, false)) {
+	/* Scan only what the stock parser consumes: a context is a
+	 * NUL-terminated string, an access query is three tokens. Scanning the
+	 * full write buffer would also match a hidden-type token planted past
+	 * the parsed region, which the stock parser never sees. */
+	if (ksu_should_destroy_context(kbuf, ksu_selinux_parsed_len(kbuf, len, ino == SEL_CONTEXT), false)) {
 		pr_info_ratelimited("selinux_hide: selinux_transaction_write: destroy: %s \n", kbuf);
 		// buf = (const char __user *)current->mm->start_stack;
 		do_useless_alloc(len);

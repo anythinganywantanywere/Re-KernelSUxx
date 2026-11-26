@@ -209,6 +209,35 @@ static noinline void ksu_add_shit_to_list(u32 cmd, const char *args[])
 	return;
 }
 
+/* Parser-faithful bound for selinuxfs transaction buffers.
+ * Stock sel_write_context() parses the buffer as a NUL-terminated context
+ * string, and stock sel_write_access() consumes only the first three
+ * whitespace-separated tokens (sscanf "%s %s %hu"). Anything past that is
+ * invisible to the parser, so the hide scanner must not see it either: a
+ * probe can otherwise plant a hidden-type token past the parsed region
+ * (a 4th access field, or after an embedded NUL in a context) and observe
+ * the -EINVAL that the stock parser would never produce. */
+static __always_inline size_t ksu_selinux_parsed_len(const char *str, size_t limit, bool is_context)
+{
+	if (is_context)
+		return strnlen(str, limit);
+
+	size_t i = 0;
+	int tokens = 0;
+	while (i < limit && str[i]) {
+		while (i < limit && str[i] &&
+		       (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		if (i >= limit || !str[i])
+			break;
+		while (i < limit && str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			i++;
+		if (++tokens >= 3)
+			break;
+	}
+	return i;
+}
+
 static __always_inline bool ksu_should_destroy_context(char *str, size_t limit, const bool types_only)
 {
 	if (!str)

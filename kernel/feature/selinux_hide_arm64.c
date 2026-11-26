@@ -96,7 +96,13 @@ static char *sh_simple_transaction_get(struct file *file, const char __user *buf
 	if (IS_ERR(data))
 		return PTR_ERR(data);
 
-	if (ino == SEL_CONTEXT && ksu_should_destroy_context(data, size, true)) {
+	/* Parser-faithful bound: scan only what the stock parser consumes
+	 * (context: up to the first NUL; access: the first three tokens), so a
+	 * hidden-type token planted past the parsed region cannot trigger a
+	 * destroy the stock parser would never produce. */
+	size_t parsed_len = ksu_selinux_parsed_len(data, size, ino == SEL_CONTEXT);
+
+	if (ino == SEL_CONTEXT && ksu_should_destroy_context(data, parsed_len, true)) {
 		pr_info_ratelimited("selinux_hide: simple_transaction_get: context: destroy: %s \n", data);
 		do_useless_alloc(size);
 		do_useless_alloc(size);
@@ -107,7 +113,7 @@ static char *sh_simple_transaction_get(struct file *file, const char __user *buf
 //		do_useless_alloc(size);
 	}
 
-	if (ino == SEL_ACCESS && ksu_should_destroy_context(data, size, false)) {
+	if (ino == SEL_ACCESS && ksu_should_destroy_context(data, parsed_len, false)) {
 		pr_info("selinux_hide: simple_transaction_get: access: destroy: %s \n", data);
 		do_useless_alloc(size);
 		do_useless_alloc(size);
