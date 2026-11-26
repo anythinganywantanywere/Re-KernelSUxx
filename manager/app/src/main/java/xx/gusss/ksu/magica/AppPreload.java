@@ -8,14 +8,14 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 
-public class AppZygotePreload implements ZygotePreload {
-    public static final String TAG = "KernelSUMagica";
+public class AppPreload implements ZygotePreload {
+    public static final String TAG = "Magica";
 
     private static native void forkDontCareAndExecKsud(String ksudPath, String packageName);
 
     @Override
     public void doPreload(@NonNull ApplicationInfo appInfo) {
-        File f = new File(appInfo.nativeLibraryDir, "libksud.so");
+        File f = new File(appInfo.nativeLibraryDir, "libdaemon.so");
         try {
             System.loadLibrary("kernelsu");
             Log.d(TAG, "executing magica ...");

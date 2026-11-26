@@ -9,7 +9,7 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
-import xx.gusss.ksu.KernelSUApplication
+import xx.gusss.ksu.MainApplication
 import xx.gusss.ksu.ui.LocalUiMode
 import xx.gusss.ksu.ui.UiMode
 import xx.gusss.ksu.ui.navigation3.LocalNavigator
@@ -53,7 +53,7 @@ fun ColorPaletteScreen() {
         onSetEnableNavigationBadge = viewModel::setEnableNavigationBadge,
         onSetEnablePredictiveBack = {
             viewModel.setEnablePredictiveBack(it)
-            KernelSUApplication.setEnableOnBackInvokedCallback(context.applicationInfo, it)
+            MainApplication.setEnableOnBackInvokedCallback(context.applicationInfo, it)
             activity?.recreate()
         },
         onSetEnableSwipeDismiss = viewModel::setEnableSwipeDismiss,

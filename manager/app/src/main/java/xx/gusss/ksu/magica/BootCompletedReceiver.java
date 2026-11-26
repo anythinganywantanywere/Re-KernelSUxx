@@ -1,6 +1,6 @@
 package xx.gusss.ksu.magica;
 
-import static xx.gusss.ksu.magica.AppZygotePreload.TAG;
+import static xx.gusss.ksu.magica.AppPreload.TAG;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

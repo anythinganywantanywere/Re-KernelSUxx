@@ -42,7 +42,7 @@ import java.util.zip.ZipFile
 private const val TAG = "KsuCli"
 
 private fun getKsuDaemonPath(): String {
-    return ksuApp.applicationInfo.nativeLibraryDir + File.separator + "libksud.so"
+    return ksuApp.applicationInfo.nativeLibraryDir + File.separator + "libdaemon.so"
 }
 
 // Single-quote a value for safe interpolation
