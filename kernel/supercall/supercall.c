@@ -193,6 +193,16 @@ int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user 
 	void __user *arg4 = (void __user *)*arg;
 
 	if (magic2 == KSU_INSTALL_MAGIC2) {
+		/* Only root and the Manager may install a driver fd.
+		 * An unprivileged app must not be able to obtain a fd and
+		 * query KSU_IOCTL_GET_INFO (root detectors use the reboot
+		 * magic to fingerprint the driver version). ksud and ksuinit
+		 * run as root; the Manager gets its fd from the zygote
+		 * setresuid hook, never from this path.
+		 */
+		if (current_uid().val != 0 && !is_manager())
+			return 0;
+
 		int fd = ksu_install_fd();
 
 		pr_info("[%d] install ksu fd: %d\n", current->pid, fd);
