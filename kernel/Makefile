@@ -68,6 +68,13 @@ $(info -- KernelSU/compat: f_op->read_iter found!)
 CFLAGS_ksu.o += -DKSU_HAS_FOP_READ_ITER
 endif
 
+# patch_memory: dcache_clean_inval_poc() exists on newer kernels only
+ifeq ($(shell grep -q "dcache_clean_inval_poc" $(srctree)/arch/arm64/include/asm/cacheflush.h 2>/dev/null; echo $$?),0)
+CFLAGS_ksu.o += -DKSU_NEW_DCACHE_FLUSH=1
+else
+CFLAGS_ksu.o += -DKSU_NEW_DCACHE_FLUSH=0
+endif
+
 CFLAGS_ksu.o += $(call cc-option, -Wno-declaration-after-statement)
 CFLAGS_ksu.o += $(call cc-option, -Wno-implicit-function-declaration)
 CFLAGS_ksu.o += $(call cc-option, -Wno-missing-prototypes)

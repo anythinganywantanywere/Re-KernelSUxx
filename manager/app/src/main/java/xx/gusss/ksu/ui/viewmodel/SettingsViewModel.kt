@@ -82,6 +82,12 @@ class SettingsViewModel(
             }
             val isBootHideEnabled = repo.getBootHideStatus() == "enabled"
             val isUtsViewEnabled = repo.getUtsViewStatus() == "enabled"
+            val mountViewFilterStatus = repo.getMountViewFilterStatus()
+            val isMountViewFilterEnabled = if (mountViewFilterStatus == "forced") {
+                repo.getMountViewFilterValue() == 1L
+            } else {
+                repo.getMountViewFilterPersistValue() == 1L
+            }
             val shellSuAdbOnlyStatus = repo.getShellSuAdbOnlyStatus()
             val isShellSuAdbOnlyEnabled = if (shellSuAdbOnlyStatus == "forced") {
                 repo.getShellSuAdbOnlyValue() == 1L
@@ -121,6 +127,8 @@ class SettingsViewModel(
                     isAdbRootEnabled = isAdbRootEnabled,
                     isBootHideEnabled = isBootHideEnabled,
                     isUtsViewEnabled = isUtsViewEnabled,
+                    mountViewFilterStatus = mountViewFilterStatus,
+                    isMountViewFilterEnabled = isMountViewFilterEnabled,
                     shellSuAdbOnlyStatus = shellSuAdbOnlyStatus,
                     isShellSuAdbOnlyEnabled = isShellSuAdbOnlyEnabled,
                     kernelUmountStatus = kernelUmountStatus,
@@ -388,6 +396,15 @@ class SettingsViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             if (repo.setUtsViewEnabled(enabled)) {
                 _uiState.update { it.copy(isUtsViewEnabled = enabled) }
+            }
+        }
+    }
+
+    fun setMountViewFilterEnabled(enabled: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (repo.setMountViewFilterEnabled(enabled)) {
+                repo.execKsudFeatureSave()
+                _uiState.update { it.copy(isMountViewFilterEnabled = enabled) }
             }
         }
     }

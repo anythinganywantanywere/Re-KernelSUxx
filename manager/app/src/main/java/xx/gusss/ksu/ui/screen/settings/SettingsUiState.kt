@@ -56,6 +56,10 @@ data class SettingsUiState(
     // UTS View
     val isUtsViewEnabled: Boolean = false,
 
+    // Mount View Filter
+    val mountViewFilterStatus: String = "",
+    val isMountViewFilterEnabled: Boolean = false,
+
     // Shell SU ADB Only
     val shellSuAdbOnlyStatus: String = "",
     val isShellSuAdbOnlyEnabled: Boolean = false,
@@ -84,6 +88,7 @@ data class SettingsScreenActions(
     val onSetAdbRootEnabled: (Boolean) -> Unit,
     val onSetBootHideEnabled: (Boolean) -> Unit,
     val onSetUtsViewEnabled: (Boolean) -> Unit,
+    val onSetMountViewFilterEnabled: (Boolean) -> Unit,
     val onSetShellSuAdbOnlyEnabled: (Boolean) -> Unit,
     val onSetDefaultUmountModules: (Boolean) -> Unit,
     val onSetEnableWebDebugging: (Boolean) -> Unit,

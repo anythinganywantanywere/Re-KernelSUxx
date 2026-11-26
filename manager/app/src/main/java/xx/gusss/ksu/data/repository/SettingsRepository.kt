@@ -63,6 +63,11 @@ interface SettingsRepository {
     suspend fun getUtsViewStatus(): String
     fun setUtsViewEnabled(enabled: Boolean): Boolean
 
+    suspend fun getMountViewFilterStatus(): String
+    suspend fun getMountViewFilterPersistValue(): Long?
+    suspend fun getMountViewFilterValue(): Long?
+    fun setMountViewFilterEnabled(enabled: Boolean): Boolean
+
     suspend fun getShellSuAdbOnlyStatus(): String
     suspend fun getShellSuAdbOnlyPersistValue(): Long?
     suspend fun getShellSuAdbOnlyValue(): Long?

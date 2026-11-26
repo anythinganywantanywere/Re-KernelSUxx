@@ -15,10 +15,11 @@ pub enum FeatureId {
     // 5 was webview_zygote_umount (v3.3.0), keep it unused so stale configs don't apply
     ShellSuAdbOnly = 6,
     UtsView = 7,
+    MountViewFilter = 8,
 }
 
 impl FeatureId {
-    pub const ALL: [Self; 7] = [
+    pub const ALL: [Self; 8] = [
         Self::SuCompat,
         Self::KernelUmount,
         Self::Sulog,
@@ -26,6 +27,7 @@ impl FeatureId {
         Self::SelinuxHide,
         Self::ShellSuAdbOnly,
         Self::UtsView,
+        Self::MountViewFilter,
     ];
 
     pub const fn from_u32(id: u32) -> Option<Self> {
@@ -37,6 +39,7 @@ impl FeatureId {
             4 => Some(Self::SelinuxHide),
             6 => Some(Self::ShellSuAdbOnly),
             7 => Some(Self::UtsView),
+            8 => Some(Self::MountViewFilter),
             _ => None,
         }
     }
@@ -50,6 +53,7 @@ impl FeatureId {
             Self::SelinuxHide => "selinux_hide",
             Self::ShellSuAdbOnly => "shell_su_adb_only",
             Self::UtsView => "uts_view",
+            Self::MountViewFilter => "mount_view_filter",
         }
     }
 
@@ -74,6 +78,9 @@ impl FeatureId {
             Self::UtsView => {
                 "UTS View - spoof the uname values apps see, globally or only for selected app UIDs"
             }
+            Self::MountViewFilter => {
+                "Mount View Filter - hide root-managed mounts from /proc/mounts, /proc/mountinfo and /proc/mountstats for app UIDs"
+            }
         }
     }
 }
@@ -87,6 +94,7 @@ pub fn parse_feature_id(name: &str) -> Result<FeatureId> {
         "selinux_hide" | "4" => Ok(FeatureId::SelinuxHide),
         "shell_su_adb_only" | "6" => Ok(FeatureId::ShellSuAdbOnly),
         "uts_view" | "7" => Ok(FeatureId::UtsView),
+        "mount_view_filter" | "8" => Ok(FeatureId::MountViewFilter),
         _ => bail!("Unknown feature: {name}"),
     }
 }

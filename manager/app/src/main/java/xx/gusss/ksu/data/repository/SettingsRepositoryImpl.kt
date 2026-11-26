@@ -237,6 +237,15 @@ class SettingsRepositoryImpl : SettingsRepository {
     override fun setUtsViewEnabled(enabled: Boolean): Boolean =
         execKsud("uts ${if (enabled) "enable" else "disable"}", true)
 
+    override suspend fun getMountViewFilterStatus(): String = getFeatureStatus("mount_view_filter")
+
+    override suspend fun getMountViewFilterPersistValue(): Long? = getFeaturePersistValue("mount_view_filter")
+
+    override suspend fun getMountViewFilterValue(): Long? = getFeatureValue("mount_view_filter")
+
+    override fun setMountViewFilterEnabled(enabled: Boolean): Boolean =
+        execKsud("feature set mount_view_filter ${if (enabled) 1 else 0}", true)
+
     override suspend fun getShellSuAdbOnlyStatus(): String = getFeatureStatus("shell_su_adb_only")
 
     override suspend fun getShellSuAdbOnlyPersistValue(): Long? = getFeaturePersistValue("shell_su_adb_only")

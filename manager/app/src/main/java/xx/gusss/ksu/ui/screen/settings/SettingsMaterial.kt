@@ -285,6 +285,22 @@ fun SettingPagerMaterial(
                             )
                         },
                         {
+                            val mountViewFilterSummary = when (uiState.mountViewFilterStatus) {
+                                "unsupported" -> stringResource(id = R.string.feature_status_unsupported_summary)
+                                "managed" -> stringResource(id = R.string.feature_status_managed_summary)
+                                "forced" -> stringResource(id = R.string.feature_status_forced_summary)
+                                else -> stringResource(id = R.string.settings_mount_view_filter_summary)
+                            }
+                            SegmentedSwitchItem(
+                                icon = Icons.Filled.VisibilityOff,
+                                title = stringResource(id = R.string.settings_mount_view_filter),
+                                summary = mountViewFilterSummary,
+                                enabled = uiState.mountViewFilterStatus == "supported",
+                                checked = uiState.isMountViewFilterEnabled,
+                                onCheckedChange = actions.onSetMountViewFilterEnabled
+                            )
+                        },
+                        {
                             val shellSuAdbOnlySummary = when (uiState.shellSuAdbOnlyStatus) {
                                 "unsupported" -> stringResource(id = R.string.feature_status_unsupported_summary)
                                 "managed" -> stringResource(id = R.string.feature_status_managed_summary)

@@ -64,6 +64,7 @@
 #include "feature/sucompat.h"
 #include "feature/sulog.h"
 #include "feature/uts_view.h"
+#include "feature/mount_view_filter.h"
 #include "preinit/preinit.h"
 #include "runtime/ksud_boot.h"
 #include "runtime/ksud.h"
@@ -144,6 +145,10 @@
 #include "feature/sucompat.c"
 #include "feature/sulog.c"
 #include "feature/uts_view.c"
+#if defined(CONFIG_ARM64) && defined(CONFIG_KALLSYMS)
+#include "hook/arm64/patch_memory.c"
+#endif
+#include "feature/mount_view_filter.c"
 #include "runtime/boot_event.c"
 #include "runtime/ksud_integration.c"
 
@@ -277,6 +282,8 @@ static int __init kernelsu_init(void)
 	ksu_shell_su_adb_only_init();
 	if (ksu_uts_view_init())
 		pr_info("uts_view: feature unavailable\n");
+	if (ksu_mvf_init())
+		pr_info("mount_view_filter: feature unavailable\n");
 
 	ksu_supercalls_init();
 
