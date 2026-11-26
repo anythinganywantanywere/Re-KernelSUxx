@@ -520,6 +520,9 @@ static void vol_detector_event(struct input_handle *handle, unsigned int type, u
 	static int vol_up_cnt = 0;
 	static int vol_down_cnt = 0;
 
+	if (!READ_ONCE(ksu_input_hook))
+		return;
+
 	if (!value)
 		return;
 	
@@ -678,8 +681,8 @@ static void stop_init_rc_hook()
 
 static void ksu_stop_input_hook_runtime()
 {
-	if (!ksu_input_hook) { return; }
-	ksu_input_hook = false;
+	if (!READ_ONCE(ksu_input_hook)) { return; }
+	WRITE_ONCE(ksu_input_hook, false);
 	pr_info("stop input_hook\n");
 	
 	vol_detector_exit();
