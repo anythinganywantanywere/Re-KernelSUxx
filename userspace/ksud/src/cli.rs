@@ -165,6 +165,7 @@ enum Commands {
         command: crate::boot_hide::Command,
     },
     /// Manage UTS View (spoof the uname values apps see)
+    #[command(name = "uts")]
     UtsView {
         #[command(subcommand)]
         command: crate::uts_view::Command,
